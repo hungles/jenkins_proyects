@@ -40,17 +40,25 @@ services:
       - 50000:50000
     restart: unless-stopped
 
-  jenkins_agent:
-    image: jenkins/ssh-agent:alpine-jdk21
+  node_agent_1:
+    image: jenkins/ssh-agent:latest
     container_name: agent1
-    ports:
-      - "2222:22"
     networks:
       jenkins:
         aliases:
           - agent1
     environment:
-      - JENKINS_AGENT_SSH_PUBKEY=INSERT_PUBLIC_KEY
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZn5ASfARtW4mCovJH96YC0gmX0lnDDLHj0W5sCQaWupFa6Ozd421ryqnoRTcKWasWKte1dDcWPRY8Zj16kn8JHOhOWDhQViOYYxQh/jAvIVmez7BR9C0/tIx4s8dpE9RdDtcG03haxoU/bcKLg7zldPdrvv8btiZkEEFu8VzUu9SZFrf1NI8Ps6SlCWKZ5ojJ3Bc639BO4F2QoNKCu+fjvPv+1pZb7nrw2mR36NcZGGwoERVwgJxDRHMzD4T0XjnvT6yC2Y3JCvWTlGeV9ZpOXWf3f3YI8QXkF3Nup6UcTN8kLpH/BCo1Cq4UvnJHfilCtVLts89lq+cHF8vgiL24+mvQ4VK06kXM9hy9ZFe3Kg4ZudIZPwLAv7639yAPmbmDquJ7AxSdbCVeUewuL5QdDVrx1Pwz61SdRkWc2lQNVXFDhoKqhkBf8cl6Mi+NX5/8NUAU157Af7jkdgxoOTGtS75+eaQeSV3YM5jNfomutlcTPgNClQSlhkyfyswu+KU=
+
+  node_agent_2:
+    image: jenkins/ssh-agent:latest
+    container_name: agent2
+    networks:
+      jenkins:
+        aliases:
+          - agent2
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZn5ASfARtW4mCovJH96YC0gmX0lnDDLHj0W5sCQaWupFa6Ozd421ryqnoRTcKWasWKte1dDcWPRY8Zj16kn8JHOhOWDhQViOYYxQh/jAvIVmez7BR9C0/tIx4s8dpE9RdDtcG03haxoU/bcKLg7zldPdrvv8btiZkEEFu8VzUu9SZFrf1NI8Ps6SlCWKZ5ojJ3Bc639BO4F2QoNKCu+fjvPv+1pZb7nrw2mR36NcZGGwoERVwgJxDRHMzD4T0XjnvT6yC2Y3JCvWTlGeV9ZpOXWf3f3YI8QXkF3Nup6UcTN8kLpH/BCo1Cq4UvnJHfilCtVLts89lq+cHF8vgiL24+mvQ4VK06kXM9hy9ZFe3Kg4ZudIZPwLAv7639yAPmbmDquJ7AxSdbCVeUewuL5QdDVrx1Pwz61SdRkWc2lQNVXFDhoKqhkBf8cl6Mi+NX5/8NUAU157Af7jkdgxoOTGtS75+eaQeSV3YM5jNfomutlcTPgNClQSlhkyfyswu+KU=
 
 volumes:
   jenkins-docker-certs:
@@ -59,5 +67,3 @@ volumes:
 networks:
   jenkins:
     driver: bridge
-
-  

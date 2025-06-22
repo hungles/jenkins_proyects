@@ -2,37 +2,36 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "mi-app"
-        TAG = "latest"
+        DEPLOY_USER = 'usuario'
+        DEPLOY_HOST = '192.168.1.100'
+        DEPLOY_PATH = '/var/www/mi-app-node'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'REPO_GIT'
+                 git branch: 'main', url: 'https://github.com/hungles/jenkins_proyects'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Move to the Node Proyet') {
             steps {
-                sh '''
-                cd client-panel/local/frontend
-                docker version
-                docker build -t ${IMAGE_NAME}:${TAG} .
-                '''
+                sh 'cd node_apps/api_test/'
             }
+            
         }
 
-        stage('Run Container') {
+        stage('Instalar dependencias') {
             steps {
-                sh 'docker run -d -p 8081:5000 --name mi-app-container ${IMAGE_NAME}:${TAG}'
+                sh 'npm install'
             }
         }
-    }
 
-    post {
-        always {
-            sh 'docker ps -a'
+        stage('Pruebas') {
+            steps {
+                // Si no tienes tests, puedes comentar esta línea
+                sh 'npm run'
+            }
         }
     }
 }
